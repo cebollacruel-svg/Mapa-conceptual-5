@@ -1,0 +1,161 @@
+/* --- ESTILOS GENERALES Y DEL CUERPO --- */
+body {
+    font-family: 'Roboto', sans-serif; /* Fuente limpia y moderna */
+    background-color: #f4f7f9; /* Un fondo gris claro suave */
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 20px;
+}
+
+header h1 {
+    color: #0056b3;
+    margin-bottom: 5px;
+}
+
+/* --- CONTENEDOR PRINCIPAL DEL ÁRBOL --- */
+.tree-container {
+    display: flex;
+    justify-content: center; /* Centra el árbol en la página */
+    overflow-x: auto; /* Permite scroll horizontal si el mapa es muy ancho */
+    padding: 20px;
+}
+
+/* --- ESTILOS BASE DEL ÁRBOL --- */
+/* Se eliminan los estilos de lista por defecto y se configura el posicionamiento */
+.tree ul {
+    padding-top: 20px;
+    position: relative;
+    transition: all 0.5s;
+    display: flex; /* Alinea los nodos horizontalmente */
+}
+
+.tree li {
+    text-align: center;
+    list-style-type: none; /* Quita los puntos de la lista */
+    position: relative;
+    padding: 20px 5px 0 5px;
+}
+
+/* --- ESTILOS DE LOS NODOS (LAS CAJAS) --- */
+.node {
+    padding: 15px 20px;
+    border-radius: 8px; /* Bordes redondeados */
+    background-color: #ffffff; /* Fondo blanco */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para dar profundidad */
+    border: 1px solid #ddd;
+    display: inline-block; /* Permite que el tamaño se ajuste al contenido */
+    min-width: 150px;
+    transition: all 0.3s ease;
+}
+
+.node:hover {
+    transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-color: #007bff;
+}
+
+.node strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+.node span {
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* --- CÓDIGOS DE COLOR PARA CADA NIVEL JERÁRQUICO --- */
+.root-node {
+    background-color: #007bff; /* Azul primario para el nodo raíz */
+    color: white;
+    border: 2px solid #0056b3;
+}
+.root-node span { color: #e0e0e0; }
+
+.primary-node {
+    background-color: #e9ecef; /* Gris claro para las ramas principales */
+    border: 2px solid #adb5bd;
+}
+.primary-node strong { color: #0056b3; }
+
+.secondary-node {
+    background-color: #e2f3ff; /* Un azul muy claro para el segundo nivel */
+    border: 1px solid #bde0fe;
+}
+
+.tertiary-node {
+    background-color: #f8f9fa; /* Un blanco roto para el nivel más bajo */
+    border: 1px solid #e9ecef;
+}
+
+
+/* --- DIBUJO DE LAS LÍNEAS CONECTORAS (LA MAGIA DEL CSS) --- */
+
+/* Línea vertical que baja desde el padre */
+.tree li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-left: 2px solid #ccc;
+    width: 0;
+    height: 20px;
+}
+
+/* Línea horizontal que conecta los nodos hermanos */
+.tree li::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    border-top: 2px solid #ccc;
+    width: 100%;
+}
+
+/* Conexión desde el nodo al centro de la línea horizontal */
+.tree li .node::before {
+    content: '';
+    position: absolute;
+    top: -20px; /* Sube para conectar con la línea del padre */
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 2px solid #ccc;
+    width: 0;
+    height: 20px;
+}
+
+/* --- AJUSTES PARA OCULTAR LÍNEAS INNECESARIAS --- */
+
+/* El nodo raíz no necesita líneas hacia arriba */
+.tree > li::before, .tree > li::after {
+    border: 0;
+}
+
+/* El último y primer hijo no necesitan la mitad de la línea horizontal */
+.tree li:first-child::after {
+    left: 50%;
+    width: 50%;
+}
+
+.tree li:last-child::after {
+    width: 50%;
+}
+
+/* Si un nodo es el único hijo, no necesita la línea horizontal */
+.tree li:only-child::after {
+    display: none;
+}
+
+/* Ajuste final para la línea que baja al nodo */
+.tree li:only-child .node::before {
+    top: -20px; /* Asegura la conexión */
+}
